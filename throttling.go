@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// TODO: раcписать доку
 type Throttling struct {
 	BeginDelay   time.Duration
 	MaxDelay     time.Duration
@@ -18,6 +17,9 @@ type Throttling struct {
 	DoneChan     chan struct{}
 }
 
+// Throttling - функция возвращает канал, сообщение в котором появится после заданного через объект периода ожидания
+//      если в канале будет true, то это означает, что работу можно заканчивать.
+//      такое может произойти потому что превышено кол-во попыток (MaxCount), либо пришла команда на завершение через DoneChan
 func (o *Throttling) Throttling() chan bool {
 	ch := make(chan bool)
 	atomic.AddInt64(&o.count, 1)
